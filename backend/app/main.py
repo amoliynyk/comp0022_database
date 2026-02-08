@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -21,8 +22,8 @@ async def lifespan(app: FastAPI):
     try:
         from app.auth.db import ensure_app_users_table
         ensure_app_users_table()
-    except Exception:
-        pass  # DB may not be available yet
+    except Exception as e:
+        logging.warning("Could not create app tables: %s", e)
     yield
     close_pool()
 

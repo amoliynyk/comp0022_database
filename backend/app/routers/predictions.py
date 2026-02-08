@@ -1,7 +1,7 @@
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel, Field
+from fastapi import APIRouter, HTTPException, Query
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/api/predictions", tags=["predictions"])
 
@@ -38,7 +38,7 @@ def predict_rating(data: PredictionRequest):
 
 
 @router.get("/similar/{movie_id}", response_model=list[SimilarMovie])
-def similar_movies(movie_id: int, limit: int = 10):
+def similar_movies(movie_id: int, limit: int = Query(10, ge=1, le=100)):
     """Find movies similar to the given movie based on ratings and genre overlap."""
     # TODO: implement once DB schema is finalised
     raise HTTPException(status_code=501, detail="Not implemented")

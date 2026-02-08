@@ -74,7 +74,7 @@ def register(data: UserRegister):
     hashed = hash_password(data.password)
     try:
         user = auth_db.create_user(data.username, data.email, hashed)
-    except (IntegrityError, Exception) as e:
+    except IntegrityError as e:
         if "unique" in str(e).lower() or "duplicate" in str(e).lower():
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
